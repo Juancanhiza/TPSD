@@ -1,7 +1,17 @@
-import java.io.Serializable;
+package py.una.sd.tp1.entidad;
 
-public class PaqueteEnvio implements Serializable{
-	private String nick,ip,mensaje;
+import org.json.simple.JSONObject;
+
+public class Mensaje {
+	private String nick,ip,mensaje,destino;
+
+	public String getDestino() {
+		return destino;
+	}
+
+	public void setDestino(String destino) {
+		this.destino = destino;
+	}
 
 	public String getNick() {
 		return nick;
@@ -26,4 +36,7 @@ public class PaqueteEnvio implements Serializable{
 	public void setMensaje(String mensaje) {
 		this.mensaje = mensaje;
 	}
+	
+	
+		
 }
