@@ -1,8 +1,14 @@
-create database bdsd;
+--\i /home/walter/Documentos/sdtp1/bdsd.sql;
 
-create role rol with password 'admin';
+create database bdsd;
+drop user rol;
+
+create user rol with password 'admin';
 alter role rol with SUPERUSER;
+alter role rol with LOGIN;
 grant all privileges on database bdsd to rol;
+
+\c bdsd;
 
 /*create table persona(
 	idpersona int(3) primary key,
