@@ -3,7 +3,7 @@
 1.Integrantes:
 Alvaro Alvarez
 Juan Cañiza
-Pablo Escobar
+Pablo Escobar    3.856.182
 Walter Jara
 Sebastián Rojas
 
