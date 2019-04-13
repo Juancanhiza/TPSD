@@ -5,11 +5,11 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class Bd {
+public class Bd {	/*Clase que representa la conexion con la base de datos*/
 
-    private static final String url = "jdbc:postgresql://localhost/sd";
-    private static final String user = "postgres";
-    private static final String password = "postgres";
+    private static final String url = "jdbc:postgresql://localhost/bdsd";
+    private static final String user = "rol";
+    private static final String password = "admin";
  
     /**
      * @return objeto Connection 

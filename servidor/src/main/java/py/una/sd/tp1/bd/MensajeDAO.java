@@ -8,33 +8,38 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.time.format.DateTimeFormatter;  
+import java.time.LocalDateTime;
+
+import py.una.sd.tp1.entidad.MensajeServidor;
 
 
-public class ControlBd {
- 
-	/**
-	 * 
-	 * @param condiciones 
-	 * @return
-	 */
-	public List<Persona> seleccionar() {
-		String query = "SELECT cedula, nombre, apellido FROM persona ";
-		
-		List<Persona> lista = new ArrayList<Persona>();
+public class MensajeDAO { //Clase que representa a la tabla mensaje de la base de datos
+	
+	public List<MensajeServidor> seleccionar() {
+		//creamos el query que hace la consulta a la base de datos
+		String query = "SELECT idmensaje, emisor, receptor, ipenvio, mensaje, fecha, error, estado FROM mensaje";
+		//creamos una lista que contendra los mensajes guardados en la base de datos
+		List<MensajeServidor> lista = new ArrayList<MensajeServidor>();
 		
 		Connection conn = null; 
         try 
         {
-        	conn = Bd.connect();
+        	conn = Bd.connect(); //hacemos conexion con la bd
         	ResultSet rs = conn.createStatement().executeQuery(query);
 
-        	while(rs.next()) {
-        		Persona p = new Persona();
-        		p.setCedula(rs.getLong(1));
-        		p.setNombre(rs.getString(2));
-        		p.setApellido(rs.getString(3));
-        		
-        		lista.add(p);
+        	while(rs.next()) { 
+        		//creamos un objeto mensaje
+        		MensajeServidor m = new MensajeServidor();
+        		//guardamos en el objeto mensaje los datos que traemos de la bd
+        		m.setNick(rs.getString(2));
+        		m.setIp(rs.getString(4));
+        		m.setMensaje(rs.getString(5));
+        		m.setDestino(rs.getString(3));
+        		m.setMensaje_error(rs.getString(7));
+        		m.setEstado(rs.getInt(8));
+        		//guardamos el objeto en la lista
+        		lista.add(m);
         	}
         	
         } catch (SQLException ex) {
@@ -51,10 +56,10 @@ public class ControlBd {
 
 	}
 	
-	public List<Persona> seleccionarPorCedula(long cedula) {
-		String SQL = "SELECT cedula, nombre, apellido FROM persona WHERE cedula = ? ";
+	/*public List<Mensaje> seleccionarPorCedula(long cedula) {
+		String SQL = "SELECT cedula, nombre, apellido FROM Mensaje WHERE cedula = ? ";
 		
-		List<Persona> lista = new ArrayList<Persona>();
+		List<Mensaje> lista = new ArrayList<Mensaje>();
 		
 		Connection conn = null; 
         try 
@@ -66,7 +71,7 @@ public class ControlBd {
         	ResultSet rs = pstmt.executeQuery();
 
         	while(rs.next()) {
-        		Persona p = new Persona();
+        		Mensaje p = new Mensaje();
         		p.setCedula(rs.getLong(1));
         		p.setNombre(rs.getString(2));
         		p.setApellido(rs.getString(3));
@@ -86,31 +91,38 @@ public class ControlBd {
         }
 		return lista;
 
-	}
+	}*/
 	
-    public long insertar(Persona p) throws SQLException {
+    public long insertar(MensajeServidor m) throws SQLException {
 
-        String SQL = "INSERT INTO persona(cedula, nombre,apellido) "
-                + "VALUES(?,?,?)";
+        String SQL = "INSERT INTO mensaje(emisor, receptor, ipenvio, mensaje, fecha, error, estado) "
+                + "VALUES(?,?,?,?,?,?,?)";
  
-        long id = 0;
+        int id = 0;
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
         Connection conn = null;
         
         try 
         {
         	conn = Bd.connect();
         	PreparedStatement pstmt = conn.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
-            pstmt.setLong(1, p.getCedula());
-            pstmt.setString(2, p.getNombre());
-            pstmt.setString(3, p.getApellido());
- 
+            pstmt.setString(1, m.getNick());
+            pstmt.setString(2, m.getDestino());
+            pstmt.setString(3, m.getIp());
+            pstmt.setString(4, m.getMensaje());
+            pstmt.setString(5, dtf.format(now));
+            pstmt.setString(6, m.getMensaje_error());
+            pstmt.setInt(7, m.getEstado());
+            
+            System.out.println("asdasdasd");
             int affectedRows = pstmt.executeUpdate();
             // check the affected rows 
             if (affectedRows > 0) {
                 // get the ID back
                 try (ResultSet rs = pstmt.getGeneratedKeys()) {
                     if (rs.next()) {
-                        id = rs.getLong(1);
+                        id = rs.getInt(1);
                     }
                 } catch (SQLException ex) {
                     System.out.println(ex.getMessage());
@@ -133,9 +145,9 @@ public class ControlBd {
     }
 	
 
-    public long actualizar(Persona p) throws SQLException {
+   /* public long actualizar(Mensaje p) throws SQLException {
 
-        String SQL = "UPDATE persona SET nombre = ? , apellido = ? WHERE cedula = ? ";
+        String SQL = "UPDATE mensaje SET nombre = ? , apellido = ? WHERE cedula = ? ";
  
         long id = 0;
         Connection conn = null;
@@ -209,5 +221,7 @@ public class ControlBd {
         	}
         }
         return id;
-    }
+    }*/
+
 }
+

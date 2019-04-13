@@ -24,6 +24,9 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
+import py.una.sd.tp1.bd.Bd;
+import py.una.sd.tp1.bd.MensajeDAO;
+
 public class Servidor  {
 	public static void main(String[] args) {
 		MarcoServidor mimarco=new MarcoServidor();
@@ -143,8 +146,11 @@ class MarcoServidor extends JFrame implements Runnable {
 
 			/***************CONSULTO LO QUE ME LLEGA DEL CLIENTE PARA REALIZAR UNA ACCION ********************/
 						if(recibido.getSolicitud().equals("chat")) {
+							//Bd conexion = new Bd();
+							//conexion.connect(); //creamos una conexion con la base de datos
 							//Mensaje recibido
 							sms = recibido.getSms();
+							MensajeDAO mdb = new MensajeDAO();
 							/*System.out.println("MENSAJE RECIBIDO DEL EMISOR");
 							System.out.println("Emisor     : "+sms.getNick());
 							System.out.println("Ip Destino : "+sms.getIp());
@@ -152,6 +158,7 @@ class MarcoServidor extends JFrame implements Runnable {
 							System.out.println("Receptor   : "+sms.getDestino());*/
 							sms.setEstado(0);             //Operacion exitosa
 							sms.setMensaje_error("ok");	  //Mensaje de la operacion
+							mdb.insertar(sms); // Guardamos en la base de datos el mensaje
 							//Imprimimos en el frame
 							System.out.println("\n"+sms.getNick()+" : "+ sms.getMensaje() +" para "+sms.getIp());
 							areatexto.append("\n"+sms.getNick()+" : "+ sms.getMensaje() +" para "+sms.getIp());
