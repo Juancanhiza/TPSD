@@ -19,10 +19,15 @@ Realizar click derecho sobre el proyecto, luego submenú Maven y Update Project.
 Marcar la opción Force Update y luego ok.
 
 3.la estructura de Base de datos.
-
+Se ejecuta un script llamado bdsd.sql para crear la base de datos.
+El script crea la base de datos bdsd, el usuario rol y la tabla mensaje.
 
 4.Cómo poblar los datos iniciales necesarios de Base de datos. 
-
+Se corre la clase cliente.
+Selecionar Chat.
+Ingresar el usuario.
+Escribir mensaje y enviar.
+El mensaje se guarda en la base de datos.
 
 5.Modo de compilar y ejecutar los componentes de servidor y cliente
 Abrir menú File y submenú Export.
